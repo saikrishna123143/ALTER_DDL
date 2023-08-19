@@ -1,0 +1,56 @@
+ALTER COMMAND:
+ 
+   *it is used to change structure of the table.
+
+syntax:
+ 
+  ALTER TABLE <table_name> ADD column
+                           RENAME column
+                           DROP column
+                           DROP columns
+                           MODIFY datatypes
+                           MODIFY field size
+
+ALTER command uses:
+  
+     * add new column
+     * rename the column
+     * drop the column
+     * drop the columns
+     * modify the column size.
+     * modify the datatype the column.
+
+1)add new column:
+  syntax:
+     
+      ALTER TABLE <TABLE_NAME> ADD COLUMN DATATYPE(SIZE);
+                                OR
+      ALTER TABLE <TABLE_NAME> ADD(COLUMN TYPE(SIZE),COLUMN TYPE(SIZE));
+
+2)rename the column:
+   Syntax:
+    
+        ALTER TABLE <TABLE_NAME> RENAME COLUMN OLD_NAME TO NEW_NAME;
+
+3)drop the column:
+   syntax:
+      
+        ALTER TABLE <TABLE_NAME> DROP COLUMN COLUMN_NAME;
+
+4)drop the columns:
+   syntax:
+     
+        ALTER TABLE <TABLE_NAME> DROP(COLUMN NAME1,...);
+
+5)MODIFY THE COLUMN SIZE:
+  synatx:
+        ALTER TABLE <TABLE_NAME> MODIFY COLUMN(NEW_SIZE);
+
+6)MODIFY THE COLUMN DATATYPE:
+  syntax:
+        ALTER TABLE <TABLE_NAME> MODIFY NEW_COLUMN(NEW_SIZE);
+
+
+
+
+ 

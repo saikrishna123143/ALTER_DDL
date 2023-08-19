@@ -1,0 +1,229 @@
+
+SQL> desc a;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ A1                                                 NUMBER(3)
+ A2                                                 CHAR(3)
+ A                                                  VARCHAR2(5)
+
+SQL> insert into a values(&a1,&a2,&a);
+Enter value for a1: 101
+Enter value for a2: 'sai'
+Enter value for a: 'aaaaa'
+old   1: insert into a values(&a1,&a2,&a)
+new   1: insert into a values(101,'sai','aaaaa')
+
+1 row created.
+
+SQL> /
+Enter value for a1: 102
+Enter value for a2: 'ais'
+Enter value for a: 'bbbbb'
+old   1: insert into a values(&a1,&a2,&a)
+new   1: insert into a values(102,'ais','bbbbb')
+
+1 row created.
+
+SQL> /
+Enter value for a1: 103
+Enter value for a2: 'ias'
+Enter value for a: 'ccccc'
+old   1: insert into a values(&a1,&a2,&a)
+new   1: insert into a values(103,'ias','ccccc')
+
+1 row created.
+
+SQL> alter table a
+  2  add doj date;
+
+Table altered.
+
+SQL> desc a;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ A1                                                 NUMBER(3)
+ A2                                                 CHAR(3)
+ A                                                  VARCHAR2(5)
+ DOJ                                                DATE
+
+SQL> select * from a;
+
+        A1 A2  A     DOJ
+---------- --- ----- ---------
+       101 sai aaaaa
+       102 ais bbbbb
+       103 ias ccccc
+
+SQL> select * from a where doj is null;
+
+        A1 A2  A     DOJ
+---------- --- ----- ---------
+       101 sai aaaaa
+       102 ais bbbbb
+       103 ias ccccc
+
+SQL> update a
+  2  set doj='12-aug-23'
+  3  where doj is null;
+
+3 rows updated.
+
+SQL> select * from a;
+
+        A1 A2  A     DOJ
+---------- --- ----- ---------
+       101 sai aaaaa 12-AUG-23
+       102 ais bbbbb 12-AUG-23
+       103 ias ccccc 12-AUG-23
+
+SQL> ----rename column name
+SQL>
+SQL>
+SQL>
+SQL> alter table  a
+  2  rename doj to doa;
+rename doj to doa
+       *
+ERROR at line 2:
+ORA-14155: missing PARTITION, PARTITIONS, SUBPARTITION, or SUBPARTITIONS
+keyword
+
+
+SQL> alter table a
+  2  rename column doj to doa;
+
+Table altered.
+
+SQL> select * from a;
+
+        A1 A2  A     DOA
+---------- --- ----- ---------
+       101 sai aaaaa 12-AUG-23
+       102 ais bbbbb 12-AUG-23
+       103 ias ccccc 12-AUG-23
+
+SQL>
+SQL>
+SQL>
+SQL> --drop the column
+SQL>
+SQL> alter table a
+  2  drop column doa;
+
+Table altered.
+
+SQL> select * from a;
+
+        A1 A2  A
+---------- --- -----
+       101 sai aaaaa
+       102 ais bbbbb
+       103 ias ccccc
+
+SQL> --drop multiple column
+SQL> alter table a
+  2  add doj date;
+
+Table altered.
+
+SQL> alter table a
+  2  drop(doj,a);
+
+Table altered.
+
+SQL> select * from a;
+
+        A1 A2
+---------- ---
+       101 sai
+       102 ais
+       103 ias
+
+SQL>
+SQL>
+SQL> --modify the datatype size
+SQL> desc a
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ A1                                                 NUMBER(3)
+ A2                                                 CHAR(3)
+
+SQL> alter table a
+  2  modify a2(5);
+modify a2(5)
+         *
+ERROR at line 2:
+ORA-00902: invalid datatype
+
+
+SQL> alter table a
+  2  modify a2 char(5);
+
+Table altered.
+
+SQL> desc a
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ A1                                                 NUMBER(3)
+ A2                                                 CHAR(5)
+
+SQL> alter table a
+  2  modify a2 char(2);
+modify a2 char(2)
+       *
+ERROR at line 2:
+ORA-01441: cannot decrease column length because some value is too big
+
+
+SQL> --error when the filed having more digits than datatype size
+SQL>
+SQL>
+SQL> --change the datatype
+SQL> --it need acondition of whole table is empty
+SQL> select * from a;
+
+        A1 A2
+---------- -----
+       101 sai
+       102 ais
+       103 ias
+
+SQL> desc a;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ A1                                                 NUMBER(3)
+ A2                                                 CHAR(5)
+
+SQL> delete from a;
+
+3 rows deleted.
+
+SQL> select * from a;
+
+no rows selected
+
+SQL> alter table a
+  2  modify a2 number(8);
+
+Table altered.
+
+SQL> desc a;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ A1                                                 NUMBER(3)
+ A2                                                 NUMBER(8)
+
+SQL> insert into a values(12,18);
+
+1 row created.
+
+SQL> alter table a
+  2  modify a2 char(8);
+modify a2 char(8)
+       *
+ERROR at line 2:
+ORA-01439: column to be modified must be empty to change datatype
+
+
+SQL> --olumn to be modified must be empty to change datatype
+SQL> --it is the
